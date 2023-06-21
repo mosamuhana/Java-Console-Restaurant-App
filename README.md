@@ -1,8 +1,12 @@
-First open project in Netbeans and build it
+### Java Console Restaurant-App
 
-the output application in "dist" folder
+Java app created for university student
+using Netbeans
 
-in project folder you can
-run file "RunApp.bat" for Windows System
-run file "RunApp.sh" for Linux System
+## The output application in "dist" folder
 
+## Usage
+- build project
+- run file "RunApp.bat" for Windows System
+- OR
+- run file "RunApp.sh" for Linux System

@@ -5,6 +5,7 @@ import com.student.restaurant.util.TableBuilder;
 import com.student.restaurant.Constants;
 import com.student.restaurant.services.EmployeeService;
 import com.student.restaurant.util.Console;
+import com.student.restaurant.util.Utils;
 
 public class AddEmployeeCommand extends Command {
 
@@ -35,13 +36,13 @@ public class AddEmployeeCommand extends Command {
   private void create() throws Exception {
     TableBuilder.printRectText("New Employee " + Constants.QUIT_HINT);
 
-    var name = Console.enterString("Enter Employee Name: ", 3);
-    var phone = Console.enterString("Enter Employee Phone: ", 0);
-    var address = Console.enterString("Enter Employee Address: ", 0);
-    var gender = Console.selectInteger("Enter Gender [1. Male | 2. Female]: ", new Integer[]{1, 2});
-    var basicSalary = Console.enterDouble("Enter Employee basicSalary: ", 1.0, null);
-    var numWorkYears = Console.enterInteger("Enter Employee numWorkYears: ", 0, 40);
-    var shift = Console.selectInteger("Enter Shift [1. Day | 2. Night]: ", new Integer[]{1, 2});
+    var name = Console.enterString("  Employee Name [3-40]: ", 40, x -> x.length() > 3);
+    var phone = Console.enterString("  Employee Phone [0-12]: ", 12);
+    var address = Console.enterString("  Employee Address [0-100]: ", 100);
+    var gender = Console.selectInteger("  Gender [1. Male | 2. Female]: ", new Integer[]{1, 2});
+    var basicSalary = Console.enterDouble("  Employee Basic Salary [>0]: ", x -> x > 0);
+    var numWorkYears = Console.enterInteger("  Employee Work Years [0-50]: ", x -> x >= 0 && x <= 50);
+    var shift = Console.selectInteger("  Shift [1. Day | 2. Night]: ", new Integer[]{1, 2});
 
     phone = phone == null || phone.isEmpty() ? null : phone;
     address = address == null || address.isEmpty() ? null : address;

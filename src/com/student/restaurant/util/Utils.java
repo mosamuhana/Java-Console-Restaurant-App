@@ -1,32 +1,11 @@
 // Name: Malak Mosa Muhana  |  University ID: 2320223469
 package com.student.restaurant.util;
 
-import com.student.restaurant.Constants;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
 public class Utils {
-
-  public static boolean isQuitCmd(String s) {
-    if (s == null) {
-      return false;
-    }
-    s = s.trim().toLowerCase();
-    var n = Math.min(s.length(), Constants.QUIT_CMD.length());
-    s = s.substring(0, n);
-    return s.equals(Constants.QUIT_CMD);
-  }
-
-  public static boolean isExitCmd(String s) {
-    if (s == null) {
-      return false;
-    }
-    s = s.trim().toLowerCase();
-    var n = Math.min(s.length(), Constants.EXIT_CMD.length());
-    s = s.substring(0, n);
-    return s.equals(Constants.EXIT_CMD);
-  }
 
   public static Object[][] createRowDetails(Object[] row, String[] header) {
     List<Object[]> list = new ArrayList<>();
@@ -54,6 +33,7 @@ public class Utils {
     } else if (min == null && max != null) {
       return Math.min(max, value);
     } else {
+      // 5 <= v <= 10
       return Math.max(min, Math.min(max, value));
     }
   }

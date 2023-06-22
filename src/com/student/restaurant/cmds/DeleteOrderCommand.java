@@ -27,6 +27,7 @@ public class DeleteOrderCommand extends Command {
       var ok = Console.yesNoQuestion("Do you want to delete order #" + order.getId(), false);
 
       if (ok) {
+        order.getCustomer().decreaseNumOrders();
         OrderService.delete(order.getId());
       }
     }

@@ -52,10 +52,6 @@ public final class OrderService {
     return order;
   }
 
-  public static List<Order> findCustomerOrders(int customerId) {
-    return getAll().stream().filter((x) -> x.getCustomerId() == customerId).toList();
-  }
-
   //****************************************************************************
   // Console Helper
   //****************************************************************************

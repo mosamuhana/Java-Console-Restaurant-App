@@ -3,14 +3,14 @@ package com.student.restaurant.cmds;
 
 public class Command {
 
-  public final Command parent;
+  public final Command prevCmd;
 
   public Command() {
-    this.parent = null;
+    this.prevCmd = null;
   }
 
   public Command(Command parent) {
-    this.parent = parent;
+    this.prevCmd = parent;
   }
 
   public void run() {
@@ -18,8 +18,8 @@ public class Command {
   }
 
   public void back() {
-    if (parent != null) {
-      parent.run();
+    if (prevCmd != null) {
+      prevCmd.run();
     }
   }
 }

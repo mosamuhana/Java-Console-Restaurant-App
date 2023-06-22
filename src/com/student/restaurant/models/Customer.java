@@ -1,8 +1,9 @@
 // Name: Malak Mosa Muhana  |  University ID: 2320223469
 package com.student.restaurant.models;
 
+import com.student.restaurant.services.OrderService;
 import com.student.restaurant.util.MapSerializer;
-import java.util.Map;
+import java.util.*;
 
 public class Customer extends Person {
 
@@ -40,7 +41,24 @@ public class Customer extends Person {
     _numOrders--;
   }
 
+  public List<Order> getOrders() {
+    return OrderService.getAll().stream()
+      .filter((x) -> x.getCustomerId() == getId())
+      .toList();
+  }
+
   public Map<String, Object> toMap() {
+    /*
+    var map = new HashMap<String, Object>();
+
+    map.put("id", getId());
+    map.put("name", getName());
+    map.put("phone", getPhone());
+    map.put("numOrders", getNumOrders());
+
+    return map;
+     */
+
     var s = new MapSerializer();
     s.setInteger("id", getId());
     s.setString("name", getName());
@@ -50,6 +68,15 @@ public class Customer extends Person {
   }
 
   public static Customer fromMap(Map<String, Object> map) {
+    /*
+    var id = (int) map.get("id");
+    var name = (String) map.get("name");
+    var phone = (String) map.get("phone");
+    var numOrders = (int) map.get("numOrders");
+
+    return new Customer(id, name, phone, numOrders);
+     */
+
     var s = new MapSerializer(map);
     return new Customer(
       s.getInteger("id"),
@@ -57,6 +84,7 @@ public class Customer extends Person {
       s.getString("phone"),
       s.getInteger("numOrders")
     );
+
   }
 
   @Override

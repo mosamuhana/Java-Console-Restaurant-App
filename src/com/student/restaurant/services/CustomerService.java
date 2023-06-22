@@ -30,6 +30,7 @@ public final class CustomerService {
     }
 
     DataService.customers.remove(customer);
+
     DataService.save();
 
     return true;

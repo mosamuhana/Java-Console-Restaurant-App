@@ -35,9 +35,8 @@ public class AddCustomerCommand extends Command {
   private void create() throws Exception {
     TableBuilder.printRectText("New Customer " + Constants.QUIT_HINT);
 
-    var name = Console.enterString("Enter Customer Name: ", 3);
-    var phone = Console.enterString("Enter Customer Phone: ", 0);
-    phone = phone.isEmpty() ? null : phone;
+    var name = Console.enterString("  Customer Name [3-40]: ", 40, x -> x.length() > 3);
+    var phone = Console.enterString("  Customer Phone [0-12]: ", 12);
 
     CustomerService.add(name, phone);
   }

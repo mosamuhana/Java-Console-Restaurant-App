@@ -24,8 +24,7 @@ public class DisplayCustomerOrdersCommand extends Command {
   private void tryRun() throws Exception {
     var customer = CustomerService.select();
     if (customer != null) {
-      var orders = OrderService.findCustomerOrders(customer.getId());
-      OrderService.printList(orders, "Orders");
+      OrderService.printList(customer.getOrders(), "Orders");
       Console.pause();
     }
   }

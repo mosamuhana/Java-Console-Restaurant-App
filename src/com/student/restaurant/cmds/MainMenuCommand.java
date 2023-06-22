@@ -27,7 +27,8 @@ public class MainMenuCommand extends Command {
       {"7", "Display Customer Orders"},
       {"8", "Display Salaries"},
       {"9", "Display Report"},
-      {"10", "Save data"},};
+      {"10", "Save data"}
+    };
 
     var keys = Arrays.stream(rows).map((row) -> row[0]).toList();
 

@@ -25,12 +25,12 @@ public class AddManagerCommand extends Command {
   public void create() throws Exception {
     TableBuilder.printRectText("Create Manager " + Constants.QUIT_HINT);
 
-    var name = Console.enterString("Enter Manager Name: ", 3);
-    var phone = Console.enterString("Enter Manager Phone: ", 0);
-    var address = Console.enterString("Enter Manager Address: ", 0);
-    var basicSalary = Console.enterDouble("Enter Manager Basic Salary: ", 1.0, null);
-    var bonus = Console.enterInteger("Enter Manager Bonus: ", 0, 500);
-    var gender = Console.selectInteger("Enter Gender [1. Male | 2. Female]: ", new Integer[]{1, 2});
+    var name = Console.enterString("  Manager Name [3-40]: ", 40, x -> x.length() > 3);
+    var phone = Console.enterString("  Manager Phone [0-12]: ", 12);
+    var address = Console.enterString("  Manager Address [0-100]: ", 100);
+    var basicSalary = Console.enterDouble("  Manager Basic Salary [>0]: ", x -> x > 0);
+    var bonus = Console.enterInteger("  Manager Bonus [0-500]: ", x -> x >= 0 && x <= 500);
+    var gender = Console.selectInteger("  Gender [1. Male | 2. Female]: ", new Integer[]{1, 2});
 
     phone = phone.isEmpty() ? null : phone;
     address = address.isEmpty() ? null : address;

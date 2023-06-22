@@ -38,7 +38,7 @@ public class AddOrderCommand extends Command {
     TableBuilder.printRectText("New Order");
 
     var type = Console.selectInteger("Enter Order Type [1. Local | 2. Delivery]: ", new Integer[]{1, 2});
-    var price = Console.enterDouble("Enter price: ", 0d, null);
+    var price = Console.enterDouble("Enter price: ", x -> x > 0.0);
 
     OrderService.add(customerId, type, price);
   }

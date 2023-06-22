@@ -1,18 +1,14 @@
 // Name: Malak Mosa Muhana  |  University ID: 2320223469
 package com.student.restaurant.services;
 
-import java.util.*;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import com.google.gson.GsonBuilder;
 import com.student.restaurant.models.*;
-import com.student.restaurant.util.Utils;
+import java.util.*;
+import java.io.*;
 
 public final class DataService {
 
-  private static final String FILE_NAME = "data.json";
+  private static final String FILE_NAME = "data.dat";
+
   private static int _nextEmployeeId = 0;
   private static int _nextCustomerId = 0;
   private static int _nextOrderId = 0;
@@ -23,41 +19,7 @@ public final class DataService {
   public static final List<Order> orders = new ArrayList<>();
 
   static {
-    var data = _load();
-
-    if (data != null) {
-      if (data.managers != null) {
-        managers.clear();
-        for (var item : data.managers) {
-          managers.add(Manager.fromMap(item));
-        }
-      }
-
-      if (data.employees != null) {
-        employees.clear();
-        for (var item : data.employees) {
-          employees.add(Employee.fromMap(item));
-        }
-      }
-
-      if (data.customers != null) {
-        customers.clear();
-        for (var item : data.customers) {
-          customers.add(Customer.fromMap(item));
-        }
-      }
-
-      if (data.orders != null) {
-        orders.clear();
-        for (var item : data.orders) {
-          orders.add(Order.fromMap(item));
-        }
-      }
-    }
-
-    _nextEmployeeId = Utils.getListMax(DataService.employees, x -> x.getId());
-    _nextCustomerId = Utils.getListMax(DataService.customers, x -> x.getId());
-    _nextOrderId = Utils.getListMax(DataService.orders, x -> x.getId());
+    load();
   }
 
   private DataService() {
@@ -75,41 +37,64 @@ public final class DataService {
     return ++_nextOrderId;
   }
 
-  public static boolean save() {
-    var data = new Data();
-    data.managers = managers.stream().map((e) -> e.toMap()).toList();
-    data.employees = employees.stream().map((e) -> e.toMap()).toList();
-    data.customers = customers.stream().map((e) -> e.toMap()).toList();
-    data.orders = orders.stream().map((e) -> e.toMap()).toList();
+  public static void load() {
+    managers.clear();
+    managers.clear();
+    managers.clear();
+    managers.clear();
+    _nextEmployeeId = 0;
+    _nextCustomerId = 0;
+    _nextOrderId = 0;
 
-    try {
-      var gson = new GsonBuilder().serializeNulls().create();
-      var json = gson.toJson(data);
-      Files.writeString(Paths.get(FILE_NAME), json, StandardCharsets.UTF_8);
+    Map<String, Object> data;
+    try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(FILE_NAME))) {
+      data = (Map<String, Object>) inputStream.readObject();
+    } catch (Exception e) {
+      return;
+    }
+
+    getListValue(data, "managers").forEach((x) -> managers.add(Manager.fromMap(x)));
+
+    getListValue(data, "employees").forEach(map -> {
+      var item = Employee.fromMap(map);
+      employees.add(item);
+      _nextEmployeeId = Math.max(_nextEmployeeId, item.getId());
+    });
+    getListValue(data, "customers").forEach(map -> {
+      var item = Customer.fromMap(map);
+      customers.add(item);
+      _nextCustomerId = Math.max(_nextCustomerId, item.getId());
+    });
+    getListValue(data, "orders").forEach(map -> {
+      var item = Order.fromMap(map);
+      orders.add(item);
+      _nextOrderId = Math.max(_nextOrderId, item.getId());
+    });
+  }
+
+  public static boolean save() {
+    var data = new HashMap<String, Object>();
+
+    data.put("managers", managers.stream().map((e) -> e.toMap()).toList());
+    data.put("employees", employees.stream().map((e) -> e.toMap()).toList());
+    data.put("customers", customers.stream().map((e) -> e.toMap()).toList());
+    data.put("orders", orders.stream().map((e) -> e.toMap()).toList());
+
+    try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(FILE_NAME))) {
+      outputStream.writeObject(data);
+      //System.out.println("Records saved successfully.");
       return true;
     } catch (IOException e) {
     }
     return false;
   }
 
-  private static Data _load() {
-    try {
-      var json = Files.readString(Paths.get(FILE_NAME), StandardCharsets.UTF_8);
-      if (json != null) {
-        var gson = new GsonBuilder().serializeNulls().create();
-        return gson.fromJson(json, Data.class);
-      }
-    } catch (IOException e) {
+  private static List<Map<String, Object>> getListValue(Map<String, Object> data, String key) {
+    if (data == null || !data.containsKey(key)) {
+      return new ArrayList<>();
     }
-    return null;
-  }
 
-  private static class Data {
-
-    public List<Map<String, Object>> managers;
-    public List<Map<String, Object>> employees;
-    public List<Map<String, Object>> customers;
-    public List<Map<String, Object>> orders;
+    return (List<Map<String, Object>>) data.get(key);
   }
 }
 // Name: Malak Mosa Muhana  |  University ID: 2320223469

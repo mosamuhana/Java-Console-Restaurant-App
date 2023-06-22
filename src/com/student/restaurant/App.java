@@ -8,7 +8,9 @@ import com.student.restaurant.util.Console;
 public class App {
 
   public static void main(String[] args) {
-    (new MainMenuCommand()).run();
+    var cmd = new MainMenuCommand();
+    cmd.run();
+    //BinaryFileExample.run();
   }
 
   public static void exit() {
